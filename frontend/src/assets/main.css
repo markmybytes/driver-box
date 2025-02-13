@@ -1,0 +1,31 @@
+@import './base.css';
+@import './tailwind.css';
+
+@font-face {
+  font-family: 'Noto Sans TC';
+  src: url('./fonts/NotoSansTC-VariableFont_wght.ttf');
+}
+
+body {
+  font-family: 'Noto Sans TC';
+}
+
+.hint-text {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 300;
+  color: var(--color-apple-green-800);
+}
+
+.v-toast {
+  padding: 8px;
+}
+
+.v-toast__item .v-toast__text {
+  padding: 0.5rem 1rem;
+}
+
+.v-toast__item {
+  min-height: 3rem;
+}
