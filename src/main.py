@@ -34,7 +34,10 @@ def temporary_directory(dir: str = None, delete: bool = True):
 
 
 def backup():
+    if BACKUP.exists():
+        shutil.rmtree(BACKUP)
     os.mkdir(BACKUP)
+
     for filename in ('driver-box.exe', 'bin', 'conf'):
         if not (path := Path(filename)).exists():
             continue
