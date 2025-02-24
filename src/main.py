@@ -106,7 +106,7 @@ def migrate_config(from_: version.Version, to: version.Version):
         raise NotImplementedError(
             f'downgrading from v{from_.major} to v{to.major}')
 
-    if from_.major == 1 and to.major == 2 or to.major >= 3:
+    if from_.major == 1 and to.major == 2 or to.major >= 4:
         raise NotImplementedError()
     return
 
