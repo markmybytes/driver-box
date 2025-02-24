@@ -5,6 +5,7 @@ import random
 import shutil
 import string
 import tempfile
+import time
 import zipfile
 from pathlib import Path
 
@@ -100,8 +101,10 @@ def replace_executable(version: str, binary_type: str, webview: bool):
                 else:
                     path.unlink()
 
+            time.sleep(1)  # add wait time to avoid WinError5
+
             if tmpdir.joinpath(path).exists():
-                tmpdir.joinpath(path).rename(path)
+                tmpdir.joinpath(path).rename(Path('.', path))
 
 
 def migrate_config(from_: version.Version, to: version.Version):
