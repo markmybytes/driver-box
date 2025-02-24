@@ -26,10 +26,11 @@ def temporary_directory(dir: str = None, delete: bool = True):
         dir_temp = dir_temp.parent.joinpath(random_string())
     os.mkdir(dir_temp, 0o777)
 
-    yield dir_temp
-
-    if delete:
-        shutil.rmtree(dir_temp, True)
+    try:
+        yield dir_temp
+    finally:
+        if delete:
+            shutil.rmtree(dir_temp, True)
 
 
 def backup():
