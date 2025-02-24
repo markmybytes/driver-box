@@ -49,7 +49,7 @@ def cleanup(restore: bool):
         for filename in ('driver-box.exe', 'bin', 'conf'):
             if not BACKUP.joinpath(filename).exists():
                 continue
-            
+
             if (newfile := Path(filename)).exists():
                 if newfile.is_dir():
                     shutil.rmtree(newfile, True)
@@ -57,7 +57,7 @@ def cleanup(restore: bool):
                     newfile.unlink()
 
             BACKUP.joinpath(filename).rename(filename)
-            
+
 
 def replace_executable(version: str, binary_type: str, webview: bool):
     filename = f'driver-box.{binary_type}-wv2.zip' if webview else f'driver-box.{binary_type}.zip'
@@ -103,11 +103,13 @@ def migrate_config(from_: version.Version, to: version.Version):
     if from_.major == to.major:
         return
     if from_.major < to.major:
-        raise NotImplementedError(f'downgrading from v{from_.major} to v{to.major}')
+        raise NotImplementedError(
+            f'downgrading from v{from_.major} to v{to.major}')
 
     if from_.major == 1 and to.major == 2 or to.major >= 3:
         raise NotImplementedError()
     return
+
 
 if __name__ == '__main__':
     print(r'''
@@ -118,18 +120,18 @@ if __name__ == '__main__':
  \__,_|_|  |_| \_/ \___|_|       |_.__/ \___/_/\_\  \__,_| .__/ \__,_|\__,_|\__\___|_|   
                                                          |_|                             
 ''')
-    
+
     argparser = argparse.ArgumentParser(description='')
     argparser.add_argument('-d', '--app-directory', type=str,
-                        help='Root directory of driver-box')
+                           help='Root directory of driver-box')
     argparser.add_argument('-s', '--version-from', type=str,
-                        required=True, help='Update from which verion')
+                           required=True, help='Update from which verion')
     argparser.add_argument('-t', '--version-to', type=str,
-                        required=True, help='Update to which version')
+                           required=True, help='Update to which version')
     argparser.add_argument('-b', '--binary-type', type=str,
-                        required=True, help='Binary target')
+                           required=True, help='Binary target')
     argparser.add_argument('-w', '--webview', action='store_true',
-                            help='Download built-in WebView2 verion')
+                           help='Download built-in WebView2 verion')
 
     args = argparser.parse_args()
     if args.app_directory:
@@ -138,16 +140,18 @@ if __name__ == '__main__':
     version_from = version.parse(args.version_from)
     version_to = version.parse(args.version_to)
 
-    if version_from.major < version_to.major:
+    if version_from.major > version_to.major:
         print('Downgrade is not supported!')
         input('Press any key to exit...')
+        exit()
 
     try:
         print('+', '-'*26, '+')
         print('| {:13s}{:^13s} |'.format('Update From', str(version_from)))
         print('| {:13s}{:^13s} |'.format('Update To', str(version_to)))
         print('| {:13s}{:^13s} |'.format('Binary', args.binary_type))
-        print('| {:13s}{:^13s} |'.format('WebView2', 'Yes' if args.webview else 'No'))
+        print('| {:13s}{:^13s} |'.format(
+            'WebView2', 'Yes' if args.webview else 'No'))
         print('+', '-'*26, '+', end='\n\n')
 
         replace_executable(str(version_to), args.binary_type, args.webview)
