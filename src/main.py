@@ -156,6 +156,8 @@ if __name__ == '__main__':
             'WebView2', 'Yes' if args.webview else 'No'))
         print('+', '-'*26, '+', end='\n\n')
 
+        backup()
+
         replace_executable(str(version_to), args.binary_type, args.webview)
 
         migrate_config(version_from, version_to)
