@@ -47,20 +47,21 @@ def backup():
 def cleanup(restore: bool):
     if not restore:
         print('Removing backups...')
-        shutil.rmtree(BACKUP, True)
     else:
         print('Restoring states...')
         for filename in ('driver-box.exe', 'bin', 'conf'):
-            if not BACKUP.joinpath(filename).exists():
-                continue
-
             if (newfile := Path(filename)).exists():
                 if newfile.is_dir():
                     shutil.rmtree(newfile, True)
                 else:
                     newfile.unlink()
 
+            if not BACKUP.joinpath(filename).exists():
+                continue
+
             BACKUP.joinpath(filename).rename(filename)
+
+    shutil.rmtree(BACKUP, True)
 
 
 def replace_executable(version: str, binary_type: str, webview: bool):
