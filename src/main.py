@@ -102,9 +102,6 @@ def replace_executable(version: str, binary_type: str, webview: bool):
 def migrate_config(from_: version.Version, to: version.Version):
     if from_.major == to.major:
         return
-    if from_.major < to.major:
-        raise NotImplementedError(
-            f'downgrading from v{from_.major} to v{to.major}')
 
     if from_.major == 1 and to.major == 2 or to.major >= 4:
         raise NotImplementedError()
