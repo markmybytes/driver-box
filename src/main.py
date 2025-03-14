@@ -43,10 +43,7 @@ def backup():
         if not (path := Path(filename)).exists():
             continue
 
-        if path.is_dir():
-            shutil.copytree(path, BACKUP.joinpath(filename))
-        else:
-            shutil.copyfile(path, BACKUP.joinpath(filename))
+        shutil.move(path, BACKUP.joinpath(filename))
 
 
 def cleanup(restore: bool):
@@ -64,7 +61,7 @@ def cleanup(restore: bool):
             if not BACKUP.joinpath(filename).exists():
                 continue
 
-            BACKUP.joinpath(filename).rename(filename)
+            shutil.move(BACKUP.joinpath(filename), newfile)
 
     shutil.rmtree(BACKUP, True)
 
@@ -107,15 +104,18 @@ def replace_executable(version: str, binary_type: str, webview: bool):
             time.sleep(1)  # add wait time to avoid WinError5
 
             if tmpdir.joinpath(path).exists():
-                tmpdir.joinpath(path).rename(Path('.', path))
+                shutil.move(tmpdir.joinpath(path), Path(path))
 
 
 def migrate_config(from_: version.Version, to: version.Version):
+    shutil.move(BACKUP.joinpath('conf'), Path('conf'))
+
     if from_.major == to.major:
         return
 
     if from_.major == 1 and to.major == 2 or to.major >= 4:
         raise NotImplementedError()
+
     return
 
 
